@@ -59,6 +59,12 @@ python -m local.parquet_smoke
 # Load shipped CSV multiple/adjusted prices into Parquet (first_system set)
 python -m local.load_csv_prices_to_parquet
 
+# Seed FX (Parquet) + spread costs (Mongo) for dbFuturesSimData
+python -m local.seed_db_sim_static
+
+# Phase B against Parquet/Mongo
+python -m local.first_system.run_system_db
+
 # Reinstall (after dep changes)
 python -m pip install --editable ".[dev]"
 ```
