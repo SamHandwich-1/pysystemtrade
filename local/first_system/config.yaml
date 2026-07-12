@@ -1,4 +1,4 @@
-# Mini-portfolio: EWMAC + carry; estimated forecast weights/FDM; fixed instrument weights.
+# Mini-portfolio: EWMAC + carry; estimated forecast + instrument weights/div multipliers.
 percentage_vol_target: 20
 notional_trading_capital: 250000
 base_currency: "USD"
@@ -32,9 +32,8 @@ use_forecast_weight_estimates: True
 use_forecast_div_mult_estimates: True
 forecast_weight_estimate:
   method: one_period
-instrument_weights:
-     SOFR: 0.4
-     US10: 0.1
-     CORN: 0.3
-     SP500_micro: 0.2
-instrument_div_multiplier: 1.5
+use_instrument_weight_estimates: True
+use_instrument_div_mult_estimates: True
+instrument_weight_estimate:
+  method: shrinkage
+  date_method: in_sample
