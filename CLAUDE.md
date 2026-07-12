@@ -12,7 +12,7 @@ This install is **verified** when all of the following hold on this machine. Re-
 4. Single-instrument EWMAC intro path produces finite forecasts and account stats (golden below).
 5. Fast pytest subset exits 0: `python -m pytest syscore/tests sysdata/tests systems/tests -q --tb=line`.
 
-**Out of scope until a later phase:** MongoDB, IB Gateway/TWS, arctic, production configs. Custom strategies live in `local/first_system/` (EWMAC + carry). Do not start production until harness A and the Phase B golden stay green.
+**Out of scope until a later phase:** IB Gateway/TWS, arctic, full production crontab/Parquet pipelines. Mongo local slice is started (see below). Custom strategies live in `local/first_system/`.
 
 ## Remotes
 
