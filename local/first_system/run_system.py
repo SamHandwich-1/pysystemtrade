@@ -1,5 +1,5 @@
 """
-Thin mini-portfolio runner: EWMAC + carry (CSV only, no GUI).
+Mini-portfolio runner: EWMAC + carry with estimated forecast weights/FDM (CSV only, no GUI).
 
 Usage:
     python -m local.first_system.run_system

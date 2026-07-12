@@ -1,4 +1,4 @@
-# Thin mini-portfolio: two fixed EWMACs + carry, four instruments, no estimation.
+# Mini-portfolio: EWMAC + carry; estimated forecast weights/FDM; fixed instrument weights.
 percentage_vol_target: 20
 notional_trading_capital: 250000
 base_currency: "USD"
@@ -28,11 +28,10 @@ trading_rules:
      other_args:
          smooth_days: 90
      forecast_scalar: 30
-forecast_weights:
-     ewmac8: 0.25
-     ewmac32: 0.25
-     carry: 0.50
-forecast_div_multiplier: 1.2
+use_forecast_weight_estimates: True
+use_forecast_div_mult_estimates: True
+forecast_weight_estimate:
+  method: one_period
 instrument_weights:
      SOFR: 0.4
      US10: 0.1

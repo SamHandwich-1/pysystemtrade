@@ -83,21 +83,21 @@ So “matches Carver” for this harness means: **same pipeline as the intro exa
 
 ## Phase B golden — `local/first_system`
 
-CSV-only mini-portfolio (fixed weights, no estimation, no Mongo/IB).
+CSV-only mini-portfolio (no Mongo/IB). Forecast weights/FDM estimated; instrument weights fixed.
 
 | Field | Value |
 |-------|--------|
 | Runner | `python -m local.first_system.run_system` |
 | Config | [`local/first_system/config.yaml`](local/first_system/config.yaml) |
-| Instruments | `SOFR`, `US10`, `CORN`, `SP500_micro` (weights 0.4 / 0.1 / 0.3 / 0.2) |
+| Instruments | `SOFR`, `US10`, `CORN`, `SP500_micro` (fixed weights 0.4 / 0.1 / 0.3 / 0.2); IDM 1.5 |
 | Rules | `ewmac8` (8/32, scalar 5.3), `ewmac32` (32/128, scalar 2.65), `carry` (smooth 90, scalar 30) |
-| Forecast weights | ewmac8 0.25, ewmac32 0.25, carry 0.50; FDM 1.2 |
-| Capital / vol | USD 250000, 20% vol target; IDM 1.5 |
-| Portfolio Sharpe | **0.5019** |
-| Other stats (rounded) | ann_mean 11.61, ann_std 23.13, hitrate 0.5084 |
-| Prior EWMAC-only golden | Sharpe **0.5673** (before carry; kept for history) |
+| Forecast combination | `use_forecast_weight_estimates` + `use_forecast_div_mult_estimates`; method `one_period` |
+| Capital / vol | USD 250000, 20% vol target |
+| Portfolio Sharpe | **0.5143** |
+| Other stats (rounded) | ann_mean 12.23, ann_std 23.78, hitrate 0.5056 |
+| Prior goldens | EWMAC-only 0.5673; fixed-weight + carry 0.5019 |
 
-Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.5019** unless CSV data or `local/first_system` config/code changed (then update this section).
+Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.5143** unless CSV data or `local/first_system` config/code changed (then update this section).
 
 ## Layout pointers
 
