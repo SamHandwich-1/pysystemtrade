@@ -12,7 +12,7 @@ This install is **verified** when all of the following hold on this machine. Re-
 4. Single-instrument EWMAC intro path produces finite forecasts and account stats (golden below).
 5. Fast pytest subset exits 0: `python -m pytest syscore/tests sysdata/tests systems/tests -q --tb=line`.
 
-**Out of scope until a later phase:** MongoDB, IB Gateway/TWS, arctic, production configs, custom strategies. Do not start those until this harness is green again after any reset.
+**Out of scope until a later phase:** MongoDB, IB Gateway/TWS, arctic, production configs. Custom strategies started in Phase B (`local/first_system/`). Do not start production until harness A and Phase B golden stay green.
 
 ## Environment
 
@@ -37,6 +37,9 @@ python -c "from sysdata.sim.csv_futures_sim_data import csvFuturesSimData; d=csv
 
 # Fast tests
 python -m pytest syscore/tests sysdata/tests systems/tests -q --tb=line
+
+# Phase B mini-portfolio
+python -m local.first_system.run_system
 
 # Reinstall (after dep changes)
 python -m pip install --editable ".[dev]"
@@ -69,9 +72,27 @@ Older intro docs published May 2016 EWMAC(32,128) tails ≈ 4.60…5.08 and Shar
 
 So “matches Carver” for this harness means: **same pipeline as the intro example** + **match the pinned local golden** (above). Exact equality to blog/doc numerics is not required and is not expected after data refresh.
 
+## Phase B golden — `local/first_system`
+
+Thin CSV-only mini-portfolio (no carry, no weight estimation, no Mongo/IB).
+
+| Field | Value |
+|-------|--------|
+| Runner | `python -m local.first_system.run_system` |
+| Config | [`local/first_system/config.yaml`](local/first_system/config.yaml) |
+| Instruments | `SOFR`, `US10`, `CORN`, `SP500_micro` (weights 0.4 / 0.1 / 0.3 / 0.2) |
+| Rules | `ewmac8` (8/32, scalar 5.3) + `ewmac32` (32/128, scalar 2.65); FDM 1.1 |
+| Capital / vol | USD 250000, 20% vol target; IDM 1.5 |
+| Portfolio Sharpe | **0.5673** |
+| Other stats (rounded) | ann_mean 13.23, ann_std 23.33, hitrate 0.5088 |
+| First verify HEAD | parent of Phase B commit (harness `a8ed1125` + this change) |
+
+Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.5673** unless CSV data or `local/first_system` config/code changed (then update this section).
+
 ## Layout pointers
 
 - Backtest intro: `docs/introduction.md`, `docs/backtesting.md`
 - Install: `docs/installation.md`
 - Data: `sysdata/`; sim CSV via `csvFuturesSimData`
 - Provided systems: `systems/provided/`
+- Local custom systems: `local/` (committed; do not use gitignored `private/` for golden baselines)
