@@ -90,14 +90,14 @@ CSV-only portfolio (no Mongo/IB): widened instruments, multi-speed EWMAC + carry
 | Runner | `python -m local.first_system.run_system` |
 | Config | [`local/first_system/config.yaml`](local/first_system/config.yaml) |
 | Instruments | `SOFR`, `US10`, `EUROSTX`, `MXP`, `CORN`, `V2X` |
-| Active rules | `ewmac8_32`, `ewmac16_64`, `ewmac32_128`, `ewmac64_256`, `carry` (faster 2/4 also defined) |
+| Active rules | all six EWMACs (`2_8` … `64_256`) + `carry` |
 | Estimates | forecast scale (pooled), forecast weights/FDM (`one_period`), instrument weights/IDM (`shrinkage` / `in_sample`) |
 | Capital / vol | USD 250000, 20% vol target |
-| Portfolio Sharpe | **0.5690** |
-| Other stats (rounded) | ann_mean 12.4, ann_std 21.8, hitrate 0.5061 |
-| Prior goldens | 0.5673 → 0.5019 → 0.5143 → 0.4905 (earlier four-instrument path) |
+| Portfolio Sharpe | **0.4229** |
+| Other stats (rounded) | ann_mean 9.074, ann_std 21.46, hitrate 0.4971 |
+| Prior goldens | … → 0.4905 → 0.5690 (without fastest two EWMACs) |
 
-Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.5690** unless CSV data or `local/first_system` config/code changed (then update this section).
+Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.4229** unless CSV data or `local/first_system` config/code changed (then update this section).
 
 ## Layout pointers
 

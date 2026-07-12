@@ -65,6 +65,8 @@ trading_rules:
      other_args:
          smooth_days: 90
 rule_variations:
+  - ewmac2_8
+  - ewmac4_16
   - ewmac8_32
   - ewmac16_64
   - ewmac32_128
