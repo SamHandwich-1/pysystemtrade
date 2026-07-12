@@ -138,7 +138,9 @@ docker stop pysystemtrade-mongo
 | Config | gitignored `private/private_config.yaml` key `parquet_store` |
 | Smoke | `python -m local.parquet_smoke` → prints `parquet_verified` after write/read of `harness_smoke/parquet_smoke.parquet` |
 | CSV → Parquet | `python -m local.load_csv_prices_to_parquet` loads SOFR/US10/EUROSTX/MXP/CORN/V2X multiple+adjusted → **csv_to_parquet_verified** |
-| Not yet | Per-contract prices from IB, FX into Parquet, production backups |
+| DB sim seed | `python -m local.seed_db_sim_static` → FX into Parquet + spread costs into Mongo → **db_sim_static_verified** |
+| DB backtest | `python -m local.first_system.run_system_db` → Sharpe **0.4229** (matches CSV golden) |
+| Not yet | Per-contract prices from IB, production backups |
 
 ## Layout pointers
 
