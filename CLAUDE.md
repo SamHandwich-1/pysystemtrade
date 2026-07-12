@@ -56,6 +56,9 @@ python -m local.mongo_smoke
 # Parquet smoke (requires private_config parquet_store)
 python -m local.parquet_smoke
 
+# Load shipped CSV multiple/adjusted prices into Parquet (first_system set)
+python -m local.load_csv_prices_to_parquet
+
 # Reinstall (after dep changes)
 python -m pip install --editable ".[dev]"
 ```
@@ -128,7 +131,8 @@ docker stop pysystemtrade-mongo
 | Store | `C:/Users/james/Projects/pysytemtrade/data/parquet` (gitignored `data/parquet/`) |
 | Config | gitignored `private/private_config.yaml` key `parquet_store` |
 | Smoke | `python -m local.parquet_smoke` → prints `parquet_verified` after write/read of `harness_smoke/parquet_smoke.parquet` |
-| Not yet | Loading futures/adjusted prices into Parquet, IB, production backups |
+| CSV → Parquet | `python -m local.load_csv_prices_to_parquet` loads SOFR/US10/EUROSTX/MXP/CORN/V2X multiple+adjusted → **csv_to_parquet_verified** |
+| Not yet | Per-contract prices from IB, FX into Parquet, production backups |
 
 ## Layout pointers
 
