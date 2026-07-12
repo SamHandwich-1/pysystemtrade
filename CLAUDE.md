@@ -12,7 +12,16 @@ This install is **verified** when all of the following hold on this machine. Re-
 4. Single-instrument EWMAC intro path produces finite forecasts and account stats (golden below).
 5. Fast pytest subset exits 0: `python -m pytest syscore/tests sysdata/tests systems/tests -q --tb=line`.
 
-**Out of scope until a later phase:** MongoDB, IB Gateway/TWS, arctic, production configs. Custom strategies started in Phase B (`local/first_system/`). Do not start production until harness A and Phase B golden stay green.
+**Out of scope until a later phase:** MongoDB, IB Gateway/TWS, arctic, production configs. Custom strategies live in `local/first_system/` (EWMAC + carry). Do not start production until harness A and the Phase B golden stay green.
+
+## Remotes
+
+| Remote | URL | Role |
+|--------|-----|------|
+| `origin` | `https://github.com/pst-group/pysystemtrade.git` | Upstream (fetch / merge) |
+| `fork` | `https://github.com/SamHandwich-1/pysystemtrade.git` | Your writable fork (push) |
+
+Push target: `git push fork develop` (no write access to `pst-group`).
 
 ## Environment
 
@@ -74,20 +83,21 @@ So “matches Carver” for this harness means: **same pipeline as the intro exa
 
 ## Phase B golden — `local/first_system`
 
-Thin CSV-only mini-portfolio (no carry, no weight estimation, no Mongo/IB).
+CSV-only mini-portfolio (fixed weights, no estimation, no Mongo/IB).
 
 | Field | Value |
 |-------|--------|
 | Runner | `python -m local.first_system.run_system` |
 | Config | [`local/first_system/config.yaml`](local/first_system/config.yaml) |
 | Instruments | `SOFR`, `US10`, `CORN`, `SP500_micro` (weights 0.4 / 0.1 / 0.3 / 0.2) |
-| Rules | `ewmac8` (8/32, scalar 5.3) + `ewmac32` (32/128, scalar 2.65); FDM 1.1 |
+| Rules | `ewmac8` (8/32, scalar 5.3), `ewmac32` (32/128, scalar 2.65), `carry` (smooth 90, scalar 30) |
+| Forecast weights | ewmac8 0.25, ewmac32 0.25, carry 0.50; FDM 1.2 |
 | Capital / vol | USD 250000, 20% vol target; IDM 1.5 |
-| Portfolio Sharpe | **0.5673** |
-| Other stats (rounded) | ann_mean 13.23, ann_std 23.33, hitrate 0.5088 |
-| First verify HEAD | parent of Phase B commit (harness `a8ed1125` + this change) |
+| Portfolio Sharpe | **0.5019** |
+| Other stats (rounded) | ann_mean 11.61, ann_std 23.13, hitrate 0.5084 |
+| Prior EWMAC-only golden | Sharpe **0.5673** (before carry; kept for history) |
 
-Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.5673** unless CSV data or `local/first_system` config/code changed (then update this section).
+Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.5019** unless CSV data or `local/first_system` config/code changed (then update this section).
 
 ## Layout pointers
 

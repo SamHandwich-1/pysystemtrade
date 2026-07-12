@@ -1,4 +1,4 @@
-# Thin Phase-B mini-portfolio: two fixed EWMACs, four instruments, no estimation.
+# Thin mini-portfolio: two fixed EWMACs + carry, four instruments, no estimation.
 percentage_vol_target: 20
 notional_trading_capital: 250000
 base_currency: "USD"
@@ -21,10 +21,18 @@ trading_rules:
          Lfast: 32
          Lslow: 128
      forecast_scalar: 2.65
+  carry:
+     function: systems.provided.rules.carry.carry
+     data:
+         - rawdata.raw_carry
+     other_args:
+         smooth_days: 90
+     forecast_scalar: 30
 forecast_weights:
-     ewmac8: 0.50
-     ewmac32: 0.50
-forecast_div_multiplier: 1.1
+     ewmac8: 0.25
+     ewmac32: 0.25
+     carry: 0.50
+forecast_div_multiplier: 1.2
 instrument_weights:
      SOFR: 0.4
      US10: 0.1

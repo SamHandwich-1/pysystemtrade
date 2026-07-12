@@ -1,5 +1,5 @@
 """
-Thin Phase-B mini-portfolio runner (CSV only, no GUI).
+Thin mini-portfolio runner: EWMAC + carry (CSV only, no GUI).
 
 Usage:
     python -m local.first_system.run_system
