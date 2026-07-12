@@ -50,6 +50,9 @@ python -m pytest syscore/tests sysdata/tests systems/tests -q --tb=line
 # Phase B mini-portfolio
 python -m local.first_system.run_system
 
+# Mongo smoke (requires Docker container pysystemtrade-mongo)
+python -m local.mongo_smoke
+
 # Reinstall (after dep changes)
 python -m pip install --editable ".[dev]"
 ```
@@ -98,6 +101,22 @@ CSV-only portfolio (no Mongo/IB): widened instruments, multi-speed EWMAC + carry
 | Prior goldens | … → 0.4905 → 0.5690 (without fastest two EWMACs) |
 
 Regression rule: re-run the runner; portfolio Sharpe within ~0.01 of **0.4229** unless CSV data or `local/first_system` config/code changed (then update this section).
+
+## Mongo verified (thin local slice)
+
+| Field | Value |
+|-------|--------|
+| Runtime | Docker `pysystemtrade-mongo` (`mongo:7`), port **27017**, volume `pysystemtrade-mongo-data` |
+| Config | gitignored [`private/private_config.yaml`](private/private_config.yaml): `mongo_host: 127.0.0.1`, `mongo_db: pysystemtrade_dev`, `mongo_port: 27017` |
+| Smoke | `python -m local.mongo_smoke` → prints `mongo_verified` after upsert/read of `harness_smoke` probe |
+| Not yet | Parquet store, IB, production crontab, loading futures data into Mongo |
+
+Start/stop:
+
+```powershell
+docker start pysystemtrade-mongo
+docker stop pysystemtrade-mongo
+```
 
 ## Layout pointers
 
