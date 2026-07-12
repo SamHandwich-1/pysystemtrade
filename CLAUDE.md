@@ -12,7 +12,7 @@ This install is **verified** when all of the following hold on this machine. Re-
 4. Single-instrument EWMAC intro path produces finite forecasts and account stats (golden below).
 5. Fast pytest subset exits 0: `python -m pytest syscore/tests sysdata/tests systems/tests -q --tb=line`.
 
-**Out of scope until a later phase:** IB Gateway/TWS, arctic, full production crontab/Parquet pipelines. Mongo local slice is started (see below). Custom strategies live in `local/first_system/`.
+**Out of scope until a later phase:** IB Gateway/TWS, arctic, full production crontab. Mongo + Parquet local stores are started (see below). Custom strategies live in `local/first_system/`.
 
 ## Remotes
 
@@ -52,6 +52,9 @@ python -m local.first_system.run_system
 
 # Mongo smoke (requires Docker container pysystemtrade-mongo)
 python -m local.mongo_smoke
+
+# Parquet smoke (requires private_config parquet_store)
+python -m local.parquet_smoke
 
 # Reinstall (after dep changes)
 python -m pip install --editable ".[dev]"
@@ -117,6 +120,15 @@ Start/stop:
 docker start pysystemtrade-mongo
 docker stop pysystemtrade-mongo
 ```
+
+## Parquet verified (thin local slice)
+
+| Field | Value |
+|-------|--------|
+| Store | `C:/Users/james/Projects/pysytemtrade/data/parquet` (gitignored `data/parquet/`) |
+| Config | gitignored `private/private_config.yaml` key `parquet_store` |
+| Smoke | `python -m local.parquet_smoke` → prints `parquet_verified` after write/read of `harness_smoke/parquet_smoke.parquet` |
+| Not yet | Loading futures/adjusted prices into Parquet, IB, production backups |
 
 ## Layout pointers
 

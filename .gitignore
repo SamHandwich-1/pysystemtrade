@@ -27,5 +27,8 @@ env/
 venv/
 .venv/
 
+# local production data stores
+data/parquet/
+
 # libreoffice
 .~lock.*
